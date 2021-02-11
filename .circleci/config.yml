@@ -127,7 +127,7 @@ jobs:
 
   deploy-infrastructure:
     docker:
-      # Docker image here that supports AWS CLI
+      - image: amazon/aws-cli
     steps:
       # Checkout code from git
       - checkout
@@ -163,6 +163,7 @@ jobs:
   configure-infrastructure:
     docker:
       # Docker image here that supports Ansible
+      - image: alpine:latest
     steps:
       # Checkout code from git
       - checkout
@@ -183,6 +184,7 @@ jobs:
   run-migrations:
     docker:
       # Docker image here that supports NodeJS
+      - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
       - checkout
@@ -201,6 +203,7 @@ jobs:
   deploy-frontend:
     docker:
       # Docker image here that supports AWS CLI
+      - image: amazon/aws-cli
     steps:
       # Checkout code from git
       - checkout
@@ -223,6 +226,7 @@ jobs:
   deploy-backend:
     docker:
       # Docker image here that supports Ansible
+      - image: alpine:latest
     steps:
       # Checkout code from git
       - checkout
@@ -241,6 +245,7 @@ jobs:
   smoke-test:
     docker:
       # Lightweight Docker image 
+      - image: python:3.7-alpine3.11
     steps:
       # Checkout code from git
       - checkout
@@ -265,6 +270,7 @@ jobs:
   cloudfront-update:
     docker:
       # Docker image here that supports AWS CLI
+      - image: amazon/aws-cli
     steps:
       # Checkout code from git
       - checkout
@@ -281,6 +287,7 @@ jobs:
   cleanup:
     docker:
       # Docker image here
+      - image: amazon/aws-cli
     steps:
       # Checkout code from git
       - checkout
