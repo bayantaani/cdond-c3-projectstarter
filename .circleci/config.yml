@@ -67,33 +67,61 @@ jobs:
 
   test-frontend:
     docker:
-      # Docker image here
+      - image: circleci/node:13.8.0
     steps:
-      # Checkout code from git
+      # Checkout code from git:
+      - checkout
       # Restore from cache
+      - restore_cache:
+          keys: [frontend-build]
       # Your job code here
+      - run:
+          name: Frontend unit test
+          command: |
+            cd frontend
+            npm i
+            npm build
+            npm run test
+      - save_cache:
+          paths: [frontend/node_modules]
+          key: frontend-build
                 
   test-backend:
     docker:
-      # Docker image here
+      - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
+      - checkout
       # Restore from cache
+      - restore_cache:
+          keys: [backend-build]
       # Your job code here
+      - run:
+          name: Backend unit test
+          command: |
+            cd backend
+            npm i
+            npm build
+            npm run test
+      - save_cache:
+          paths: [backend/node_modules]
+          key: backend-build
             
   scan-frontend:
     docker:
-      # Docker image here
+      - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
+      - checkout
       # Restore from cache
       # Your job code here
 
   scan-backend:
     docker:
-      # Docker image here
+      - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
+      - checkout
       # Restore from cache
       # Your job code here
 
@@ -102,6 +130,7 @@ jobs:
       # Docker image here that supports AWS CLI
     steps:
       # Checkout code from git
+      - checkout
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -136,6 +165,7 @@ jobs:
       # Docker image here that supports Ansible
     steps:
       # Checkout code from git
+      - checkout
       # Add ssh keys with fingerprint
       # attach workspace
       - run:
@@ -155,6 +185,7 @@ jobs:
       # Docker image here that supports NodeJS
     steps:
       # Checkout code from git
+      - checkout
       - run:
           name: Run migrations
           command: |
@@ -172,6 +203,7 @@ jobs:
       # Docker image here that supports AWS CLI
     steps:
       # Checkout code from git
+      - checkout
       - run:
           name: Install dependencies
           command: |
@@ -193,6 +225,7 @@ jobs:
       # Docker image here that supports Ansible
     steps:
       # Checkout code from git
+      - checkout
       # Add ssh keys with fingerprint
       # attach workspace
       - run:
@@ -210,6 +243,7 @@ jobs:
       # Lightweight Docker image 
     steps:
       # Checkout code from git
+      - checkout
       - run:
           name: Install dependencies
           command: |
@@ -233,6 +267,7 @@ jobs:
       # Docker image here that supports AWS CLI
     steps:
       # Checkout code from git
+      - checkout
       - run:
           name: Install dependencies
           command: |
@@ -248,6 +283,7 @@ jobs:
       # Docker image here
     steps:
       # Checkout code from git
+      - checkout
       - run:
           name: Get old stack workflow id
           command: |
