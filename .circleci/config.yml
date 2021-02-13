@@ -84,9 +84,9 @@ jobs:
             npm build
             npm install
             npm run test
-      - save_cache:
-          paths: [frontend/node_modules]
-          key: frontend-test
+    #  - save_cache:
+    #      paths: [frontend/node_modules]
+    #      key: frontend-test
                 
   test-backend:
     docker:
@@ -105,9 +105,9 @@ jobs:
             npm build
             npm install
             npm run test
-      - save_cache:
-          paths: [backend/node_modules]
-          key: backend-test
+      #- save_cache:
+      #    paths: [backend/node_modules]
+      #    key: backend-test
             
   scan-frontend:
     docker:
