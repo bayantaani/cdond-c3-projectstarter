@@ -82,6 +82,7 @@ jobs:
           command: |
             cd frontend
             npm i
+            npm build
             npm run test
       - save_cache:
           paths: [frontend/node_modules]
@@ -102,6 +103,7 @@ jobs:
           command: |
             cd backend
             npm i
+            npm build
             npm run test
       - save_cache:
           paths: [backend/node_modules]
