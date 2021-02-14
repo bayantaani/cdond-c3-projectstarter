@@ -39,7 +39,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-{{.Environment.CACHE_VERSION }}-{{checksum "package-lock.json"}}]
+          key: frontend-{{.Environment.CACHE_VERSION }}-{{checksum "package-lock.json"}}
       - run:
           name: Build front-end
           command: |
@@ -117,7 +117,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [frontend-{{.Environment.CACHE_VERSION }}-{{checksum "package-lock.json"}}]
+          key: frontend-{{.Environment.CACHE_VERSION }}-{{checksum "package-lock.json"}}
       # Your job code here
       - run:
           name: frontend scan
@@ -133,7 +133,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [backend-{{.Environment.CACHE_VERSION }}-{{checksum "package-lock.json"}}]
+          key: backend-{{.Environment.CACHE_VERSION }}-{{checksum "package-lock.json"}}
       # Your job code here
       - run:
           name: backend scan
