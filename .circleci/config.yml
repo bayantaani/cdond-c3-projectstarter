@@ -39,7 +39,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-key]
+          keys: [frontend-{{.Environment.CACHE_VERSION }}-{{checksum "package-lock.json"}}]
       - run:
           name: Build front-end
           command: |
@@ -48,7 +48,7 @@ jobs:
             npm run build
       - save_cache:
           paths: [frontend/node_modules]
-          key: frontend-key
+          key: frontend-{{.Environment.CACHE_VERSION }}-{{checksum "package-lock.json"}}
 
   build-backend:
     docker:
@@ -56,7 +56,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-key]
+          keys: [backend-{{.Environment.CACHE_VERSION }}-{{checksum "package-lock.json"}}]
       - run:
           name: Back-end build
           command: |
@@ -65,7 +65,7 @@ jobs:
             npm run build
       - save_cache:
           paths: [backend/node_modules]
-          key: backend-key
+          key: backend-{{.Environment.CACHE_VERSION }}-{{checksum "package-lock.json"}}
 
   test-frontend:
     docker:
@@ -75,7 +75,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [frontend-key]
+          keys: [frontend-{{.Environment.CACHE_VERSION }}-{{checksum "package-lock.json"}}]
       # Your job code here
       - run:
           name: Frontend unit test
@@ -86,7 +86,7 @@ jobs:
             npm run test
       - save_cache:
           paths: [frontend/node_modules]
-          key: frontend-key
+          key: frontend-{{.Environment.CACHE_VERSION }}-{{checksum "package-lock.json"}}
                 
   test-backend:
     docker:
@@ -96,7 +96,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [backend-key]
+          keys: [backend-{{.Environment.CACHE_VERSION }}-{{checksum "package-lock.json"}}]
       # Your job code here
       - run:
           name: Backend unit test
@@ -107,7 +107,7 @@ jobs:
             npm run test
       - save_cache:
           paths: [backend/node_modules]
-          key: backend-key
+          key: backend-{{.Environment.CACHE_VERSION }}-{{checksum "package-lock.json"}}
             
   scan-frontend:
     docker:
@@ -117,7 +117,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [frontend-key]
+          keys: [frontend-{{.Environment.CACHE_VERSION }}-{{checksum "package-lock.json"}}]
       # Your job code here
       - run:
           name: frontend scan
@@ -133,7 +133,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [bsckend-build]
+          keys: [backend-{{.Environment.CACHE_VERSION }}-{{checksum "package-lock.json"}}]
       # Your job code here
       - run:
           name: backend scan
