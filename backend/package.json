@@ -29,7 +29,8 @@
     "migrations-win": "ts-node node_modules/typeorm/cli.js migration:run",
     "premigrations:revert": "npm run build",
     "migrations:revert": "ts-node -r dotenv/config node_modules/.bin/typeorm migration:revert",
-    "update:domain": "npm update @kiwihr/kiwi-domain"
+    "update:domain": "npm update @kiwihr/kiwi-domain",
+    "test:ci":"jest --ci --runInBand --reporters=default --reporters=jest-junit"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
