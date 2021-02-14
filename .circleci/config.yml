@@ -87,7 +87,7 @@ jobs:
           command: |
             cd frontend
             npm build
-            npm install
+            npm install --no-package-lock
             npm run test
       - save_cache:
           paths:
