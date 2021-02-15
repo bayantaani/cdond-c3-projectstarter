@@ -88,6 +88,7 @@ jobs:
             cd frontend
             npm install
             npm build
+            npm install
             npm run test
       - save_cache:
           paths:
@@ -111,6 +112,7 @@ jobs:
             cd backend
             npm install
             npm build
+            npm install
             npm run test
       - save_cache:
           paths: 
