@@ -86,8 +86,8 @@ jobs:
           name: Frontend unit test
           command: |
             cd frontend
+            npm install
             npm build
-            npm install --no-package-lock
             npm run test
       - save_cache:
           paths:
@@ -109,8 +109,8 @@ jobs:
           name: Backend unit test
           command: |
             cd backend
-            npm build
             npm install
+            npm build
             npm run test
       - save_cache:
           paths: 
