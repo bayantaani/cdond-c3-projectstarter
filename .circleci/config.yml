@@ -58,7 +58,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: backend-{{ checksum "package-lock.json" }}
+          key: backend1-{{ checksum "package-lock.json" }}
       - run:
           name: Back-end build
           command: |
@@ -70,7 +70,7 @@ jobs:
             - backend/node_modules
             - backend/dist
 
-          key: backend-{{ checksum "package-lock.json" }}
+          key: backend1-{{ checksum "package-lock.json" }}
 
   test-frontend:
     docker:
@@ -103,7 +103,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          key: backend-{{ checksum "package-lock.json" }}
+          key: backend1-{{ checksum "package-lock.json" }}
       # Your job code here
       - run:
           name: Backend unit test
@@ -117,7 +117,7 @@ jobs:
             - backend/node_modules
             - backend/dist
 
-          key: backend-{{ checksum "package-lock.json" }}
+          key: backend1-{{ checksum "package-lock.json" }}
             
   scan-frontend:
     docker:
@@ -143,7 +143,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          key: backend-${CIRCLE_WORKFLOW_ID}
+          key: backend1-${CIRCLE_WORKFLOW_ID}
       # Your job code here
       - run:
           name: backend scan

@@ -57,7 +57,7 @@
     "react-test-renderer": "^16.14.0",
     "redux-devtools-extension": "^2.13.8",
     "style-loader": "^0.23.1",
-    "ts-jest": "^26.5.1",
+    "ts-jest": "^24.3.0",
     "ts-loader": "^6.2.2",
     "tslint": "^5.20.1",
     "typescript": "^3.9.9",
@@ -76,7 +76,7 @@
     "@types/react-gravatar": "^2.6.8",
     "@types/react-tagsinput": "^3.19.7",
     "@types/redux-form": "^8.3.1",
-    "axios": "^0.21.1",
+    "axios": "^0.19.2",
     "axui-contextmenu": "^0.4.0",
     "classnames": "^2.2.6",
     "connected-react-router": "^4.5.0",
@@ -132,7 +132,7 @@
       "raf/polyfill"
     ],
     "testRegex": ".*(spec|test)\\.(ts|tsx|js)$",
-    "setupFilesAfterEnv": "<rootDir>/setupTests.ts",
+    "setupTestFrameworkScriptFile": "<rootDir>/setupTests.ts",
     "snapshotSerializers": [
       "enzyme-to-json"
     ],
