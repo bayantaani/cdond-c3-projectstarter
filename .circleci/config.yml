@@ -158,26 +158,31 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
+      - run: yum install -y tar
+      - run: yum install -y gzip
       - run:
           name: Ensure back-end infrastructure exists
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
-              --stack-name "backend-hbyiklnn7" \
-              --tags project=backend-stack \
-              --parameter-overrides ID="hbyiklnn7"
+              --stack-name "backend${CIRCLE_WORKFLOW_ID}" \
+              --tags project=udapeople \
+              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID}
       - run:
           name: Ensure front-end infrastructure exist
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
-              --tags project=frontend-stack \
-              --stack-name "frontend-hbyiklnn7" \
-              --parameter-overrides ID="hbyiklnn7"  
+              --tags project=udapeople \
+              --stack-name "frontend${CIRCLE_WORKFLOW_ID}" \
+              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID} 
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            # Your code here
+            aws ec2 describe-instances \
+            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --filters "Name=tag:project,Values=udapeople" \
+            --output text >> inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
