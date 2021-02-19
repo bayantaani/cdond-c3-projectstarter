@@ -248,8 +248,8 @@ jobs:
       - run:
           name: install aws-cli for rollback and destroying environment
           command: |
-            sudo apt-get install python
-            pip install awscli
+            sudo apt-get install python3-pip
+            pip3 install awscli
       - run:
           name: Run migrations
           command: |
