@@ -215,7 +215,7 @@ jobs:
           name: Install dependencies
           command: |
             apk add tar gzip curl
-            #apk add -update ansible
+            apk add -update ansible
             pip install awscli
       - run:
           name: Configure server
