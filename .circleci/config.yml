@@ -324,9 +324,9 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            yum -y install tar gzip 
-            curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
-            yum -y install nodejs
+            apk add --update ansible
+            apk add --update tar gzip curl
+            apk add --update openssh-client
       - run:
           name: Deploy backend
           command: |
@@ -347,19 +347,25 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            # your code here
-      - run:
-          name: Get backend url
-          command: |
-            # your code here
+            apk add --update tar gzip curl
       - run:
           name: Backend smoke test.
           command: |
-            # your code here
+            BACKEND_IP=$(curl -H "token: IP-${CIRCLE_WORKFLOW_ID:0:9}" \
+                        --request GET https://api.memstash.io/values/IP)
+            URL="http://$BACKEND_IP:3030/api/status"
+            echo $URL
+            curl $URL
       - run:
           name: Frontend smoke test.
           command: |
-            # your code here
+            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-west-2.amazonaws.com"
+            if curl -s ${URL} | grep "Welcome"
+            then
+              return 0
+            else
+              return 1
+            fi
       # Here's where you will add some code to rollback on failure      
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID}"
