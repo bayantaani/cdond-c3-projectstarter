@@ -245,8 +245,6 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      - restore_cache:
-          key: backend2-{{ checksum "package-lock.json" }}
       - run:
           name: install aws-cli for rollback and destroying environment
           command: |
@@ -257,7 +255,7 @@ jobs:
           command: |
             cd backend
             npm install 
-            npm run migrations > migration_status            
+            npm run migrations
       - run:
           name: Send migration results to memstash
           command: |
