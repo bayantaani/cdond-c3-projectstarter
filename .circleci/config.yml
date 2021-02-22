@@ -255,11 +255,21 @@ jobs:
           command: |
             cd backend
             npm install 
-            npm run migrations
+            npm run migrations > migration_result
       - run:
           name: Send migration results to memstash
           command: |
-            return -1
+            cd backend
+            if grep -q "has been executed successfully" migration_result
+            then
+              echo "success!"
+              curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" --request PUT \
+                --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
+            else
+              echo "failed!"
+              curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" --request PUT \
+                --data "0" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
+            fi
             
      # Here's where you will add some code to rollback on failure      
       - destroy-environment:
