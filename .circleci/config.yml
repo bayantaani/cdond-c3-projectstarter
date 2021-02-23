@@ -347,12 +347,13 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update tar gzip curl
+            apk add --update tar gzip curl aws
       - run:
           name: Backend smoke test.
           command: |
             BACKEND_IP=$(curl -H "token: IP-${CIRCLE_WORKFLOW_ID:0:9}" \
                         --request GET https://api.memstash.io/values/IP)
+            echo $BACKEND_IP
             URL="http://$BACKEND_IP:3030/api/status"
             echo $URL
             curl $URL
