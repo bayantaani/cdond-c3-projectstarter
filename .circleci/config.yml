@@ -3,19 +3,15 @@ version: 2.1
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
-    parameters:
-      # Add parameter here
-      workflow_id:
-        type: string
     steps:
       - run:
           name: Destroy environments
           when: on_fail
           command: |
             echo "Destroying environments"
-            aws s3 rm s3://udapeople-<< parameters.workflow_id >> --recursive
-            aws cloudformation delete-stack --stack-name backend-<< parameters.workflow_id >>
-            aws cloudformation delete-stack --stack-name frontend-<< parameters.workflow_id >>
+            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+            aws cloudformation delete-stack --stack-name backend-${CIRCLE_WORKFLOW_ID:0:7}
+            aws cloudformation delete-stack --stack-name frontend-${CIRCLE_WORKFLOW_ID:0:7}
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -169,17 +165,17 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
-              --stack-name "backend-${CIRCLE_WORKFLOW_ID}" \
+              --stack-name "backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --tags project=udapeople \
-              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID}
+              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7}
       - run:
           name: Ensure front-end infrastructure exist
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
               --tags project=udapeople \
-              --stack-name "frontend-${CIRCLE_WORKFLOW_ID}" \
-              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID} 
+              --stack-name "frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7} 
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -193,8 +189,7 @@ jobs:
           paths:
             - project/.circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure
-      - destroy-environment:
-          workflow_id: "${CIRCLE_WORKFLOW_ID}"
+      - destroy-environment
       - revert-migrations  
 
   configure-infrastructure:
@@ -234,8 +229,7 @@ jobs:
             cat backend/.env
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
       # Here's where you will add some code to rollback on failure
-      - destroy-environment:
-          workflow_id: "${CIRCLE_WORKFLOW_ID}"
+      - destroy-environment
       - revert-migrations
 
   run-migrations:
@@ -272,8 +266,7 @@ jobs:
             fi
             
      # Here's where you will add some code to rollback on failure      
-      - destroy-environment:
-          workflow_id: "${CIRCLE_WORKFLOW_ID}"
+      - destroy-environment
       - revert-migrations
 
   deploy-frontend:
@@ -303,10 +296,9 @@ jobs:
             npm install
             npm run build
             ls
-            aws s3 cp ./dist s3://udapeople-"${CIRCLE_WORKFLOW_ID}" --recursive
+            aws s3 cp ./dist s3://udapeople-"${CIRCLE_WORKFLOW_ID:0:7}" --recursive
       # Here's where you will add some code to rollback on failure      
-      - destroy-environment:
-          workflow_id: "${CIRCLE_WORKFLOW_ID}"
+      - destroy-environment
       - revert-migrations
                     
   deploy-backend:
@@ -334,8 +326,7 @@ jobs:
             ansible-playbook -i inventory.txt .circleci/ansible/deploy-backend.yml
             
       # Here's where you will add some code to rollback on failure      
-      - destroy-environment:
-          workflow_id: "${CIRCLE_WORKFLOW_ID}"
+      - destroy-environment
       - revert-migrations
 
   smoke-test-frontend:
@@ -363,8 +354,7 @@ jobs:
               return 1
             fi
       # Here's where you will add some code to rollback on failure      
-      - destroy-environment:
-          workflow_id: "${CIRCLE_WORKFLOW_ID}"
+      - destroy-environment
       - revert-migrations
 
   smoke-test-backend:
@@ -390,8 +380,7 @@ jobs:
             echo $URL
             curl $URL
       # Here's where you will add some code to rollback on failure      
-      - destroy-environment:
-          workflow_id: "${CIRCLE_WORKFLOW_ID}"
+      - destroy-environment
       - revert-migrations
 
   cloudfront-update:
@@ -414,8 +403,7 @@ jobs:
               --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID}"
               --tags project=udapeople
       # Here's where you will add some code to rollback on failure      
-      - destroy-environment:
-          workflow_id: "${CIRCLE_WORKFLOW_ID}"
+      - destroy-environment
       - revert-migrations
 
   cleanup:
