@@ -184,8 +184,9 @@ jobs:
             --filters "Name=tag:project,Values=udapeople" \
             --output text)
             
-            echo $backendip
+            echo "$backendip"
             echo $backendip >> .circleci/ansible/inventory.txt
+            cat .circleci/ansible/inventory.txt
 
             curl -H "Content-Type: text/plain" -H "token: IP-${CIRCLE_WORKFLOW_ID}" \
             --request PUT \
