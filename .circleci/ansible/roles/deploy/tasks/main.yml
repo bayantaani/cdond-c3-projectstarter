@@ -4,6 +4,9 @@
     path: /home/ubuntu/backend
     state: directory
 
+- name: Print the current directory
+  shell: pwd
+
 - name: Copy backend dist files web server
   copy:
     src: /root/project/artifact.tar.gz
