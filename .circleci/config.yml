@@ -185,6 +185,7 @@ jobs:
             --output text)
             
             echo "$backendip"
+            cat .circleci/ansible/inventory.txt
             echo $backendip >> .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
 
