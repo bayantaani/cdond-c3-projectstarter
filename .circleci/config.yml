@@ -329,6 +329,14 @@ jobs:
             apk add --update ansible
             apk add --update tar gzip curl
             apk add --update openssh-client
+            apk add --update python3 py3-pip
+            pip3 install --upgrade pip
+            pip3 install awscli
+      - run:
+          name: Compress backend folder
+          command: |
+            tar -C backend -czvf artifact.tar.gz .
+            ls
       - run:
           name: Deploy backend
           command: |
