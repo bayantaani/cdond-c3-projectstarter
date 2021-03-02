@@ -419,17 +419,13 @@ jobs:
             --query "Exports[?Name==\`WorkflowID\`].Value" \
             --no-paginate --output text)
             
-            export STACKS=$(aws cloudformation list-stacks \
-            --query "StackSummaries[*].StackName" \
-            --stack-status-filter CREATE_COMPLETE \
-            --no-paginate --output text)
             echo OldWorkflowID: "$OldWorkflowID"
-            echo STACKS: "$STACKS" 
+            
             aws cloudformation deploy \
-            --template-file /root/project/.circleci/files/cloudfront.yml \
+            --template-file .circleci/files/cloudfront.yml \
             --tags project=udapeople \
             --stack-name udapeople-cloudfront \
-            --parameter-overrides newWorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" 
+            --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" 
 
       # Here's where you will add some code to rollback on failure      
       - destroy-environment
@@ -476,24 +472,48 @@ workflows:
       #    requires: [build-backend]
       #- scan-frontend:
       #    requires: [build-frontend]
-      - deploy-infrastructure #:
+      - deploy-infrastructure:
       #    requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-      #    filters:
-      #      branches:
-      #        only: [test-feature-branch]
+          filters:
+            branches:
+              only: [master]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
+          filters:
+            branches:
+              only: [master]
       - run-migrations:
           requires: [configure-infrastructure]
+          filters:
+            branches:
+              only: [master]
       - deploy-frontend:
           requires: [run-migrations]
+          filters:
+            branches:
+              only: [master]
       - deploy-backend:
           requires: [run-migrations]
+          filters:
+            branches:
+              only: [master]
       - smoke-test-frontend:
           requires: [deploy-backend, deploy-frontend]
+          filters:
+            branches:
+              only: [master]
       - smoke-test-backend:
-          requires: [smoke-test-frontend]    
-      - cleanup:
-          requires: [smoke-test-backend]
+          requires: [smoke-test-frontend]
+          filters:
+            branches:
+              only: [master]
       - cloudfront-update:
+          requires: [smoke-test-backend]
+          filters:
+            branches:
+              only: [master]
+      - cleanup:
           requires: [cleanup]
+          filters:
+            branches:
+              only: [master]
