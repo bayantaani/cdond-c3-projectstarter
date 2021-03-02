@@ -513,7 +513,7 @@ workflows:
             branches:
               only: [master]
       - cleanup:
-          requires: [cleanup]
+          requires: [cloudfront-update]
           filters:
             branches:
               only: [master]
