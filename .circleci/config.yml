@@ -421,7 +421,12 @@ jobs:
             
             echo OldWorkflowID: "$OldWorkflowID"
             
-            aws cloudformation deploy \
+            aws cloudformation update-stack \
+            --use-previous-template \
+            --stack-name cloudfront-stack \
+            --parameters ParameterKey=WorkflowID,ParameterValue=${CIRCLE_WORKFLOW_ID:0:7},UsePreviousValue=false
+            
+            # aws cloudformation deploy \
             --template-file .circleci/files/cloudfront.yml \
             --tags project=udapeople \
             --stack-name udapeople-cloudfront \
